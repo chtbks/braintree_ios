@@ -1,6 +1,6 @@
 # Braintree iOS SDK Release Notes
 
-## unreleased
+## 6.0.0-beta4 (2023-06-01)
 * Require Xcode 14.1 (per [App Store requirements](https://developer.apple.com/news/?id=jd9wcyov#:~:text=Starting%20April%2025%2C%202023%2C%20iOS,on%20the%20Mac%20App%20Store))
 * Move from Braintree to PayPal analytics service
 * Make `BTConfiguration` extensions internal
@@ -28,7 +28,8 @@
       * Add error `.fetchConfigurationFailed` = 4
   * BraintreeSEPADirectDebit
     * Add `BTSEPADirectDebitError` case
-      * Add error `.failedToCreateNonce` = 8
+      * Add error `.failedToCreateNonce` = 7
+    * Remove `BTSEPADirectDebitError.presentationContextInvalid`
     
 ## 6.0.0-beta3 (2023-04-18)
 * Remove `iosBaseSDK`, `iosDeploymentTarget`, `iosIdentifierForVendor`, `deviceAppGeneratedPersistentUuid`, and `deviceScreenOrientation` from `BTAnalyticsMetadata`
