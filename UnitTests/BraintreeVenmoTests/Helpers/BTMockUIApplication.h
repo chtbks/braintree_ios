@@ -9,6 +9,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)stubCanOpenURLWith:(BOOL)canOpenURL;
 
+- (void)setupOpenURLCalledWith:(NSURL *)url scheme:(NSString *)scheme merchantID:(NSString *)merchantID;
+
 - (void)verifyOpenURLCalledWith:(NSURL *)url;
 
 @end

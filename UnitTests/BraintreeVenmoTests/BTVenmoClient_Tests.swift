@@ -29,8 +29,6 @@ class BTVenmoClient_Tests: XCTestCase {
                 ]
             ]
         ])
-        
-        mockUIApplication.stubCanOpenURL(with: true)
     }
 
     func testTokenize_whenRemoteConfigurationFetchFails_callsBackWithConfigurationError() {
@@ -510,6 +508,9 @@ class BTVenmoClient_Tests: XCTestCase {
         let fakeApplication = FakeApplication()
         venmoClient.application = fakeApplication
         venmoClient.bundle = FakeBundle()
+        mockUIApplication.stubCanOpenURL(with: true)
+        
+        mockUIApplication.setupOpenURLCalled(with: URL(string: "TEST")!, scheme: "com.venmo.touch.v2", merchantID: "venmo_merchant_id")
 
         venmoClient.tokenize(venmoRequest) { _, _ in }
 
