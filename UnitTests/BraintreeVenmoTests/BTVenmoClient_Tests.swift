@@ -510,17 +510,15 @@ class BTVenmoClient_Tests: XCTestCase {
         venmoClient.bundle = FakeBundle()
         mockUIApplication.stubCanOpenURL(with: true)
         
-        mockUIApplication.setupOpenURLCalled(with: URL(string: "TEST")!, scheme: "com.venmo.touch.v2", merchantID: "venmo_merchant_id")
+        mockUIApplication.setupOpenURLExpectations(
+            withScheme: "com.venmo.touch.v2",
+            merchantID: "venmo_merchant_id",
+            accessToken: "venmo-access-token"
+        )
 
         venmoClient.tokenize(venmoRequest) { _, _ in }
 
-        mockUIApplication.verifyOpenURLCalled(with: URL(string: "TEST")!)
-
-        
-//        XCTAssertTrue(fakeApplication.openURLWasCalled)
-//        XCTAssertEqual(fakeApplication.lastOpenURL!.scheme, "com.venmo.touch.v2")
-//        XCTAssertNotNil(fakeApplication.lastOpenURL!.absoluteString.range(of: "venmo_merchant_id"));
-//        XCTAssertNotNil(fakeApplication.lastOpenURL!.absoluteString.range(of: "venmo-access-token"));
+        mockUIApplication.verifyOpenURLExpectations()
     }
 
     func testAuthorizeAccountWithProfileID_withProfileID_usesProfileIDToAppSwitch() {
@@ -529,15 +527,19 @@ class BTVenmoClient_Tests: XCTestCase {
         let fakeApplication = FakeApplication()
         venmoClient.application = fakeApplication
         venmoClient.bundle = FakeBundle()
-
+        mockUIApplication.stubCanOpenURL(with: true)
+        
         venmoRequest.profileID = "second_venmo_merchant_id"
+        
+        mockUIApplication.setupOpenURLExpectations(
+            withScheme: "com.venmo.touch.v2",
+            merchantID: "second_venmo_merchant_id",
+            accessToken: "venmo-access-token"
+        )
 
         venmoClient.tokenize(venmoRequest) { _, _ in }
 
-        XCTAssertTrue(fakeApplication.openURLWasCalled)
-        XCTAssertEqual(fakeApplication.lastOpenURL!.scheme, "com.venmo.touch.v2")
-        XCTAssertNotNil(fakeApplication.lastOpenURL!.absoluteString.range(of: "second_venmo_merchant_id"));
-        XCTAssertNotNil(fakeApplication.lastOpenURL!.absoluteString.range(of: "venmo-access-token"));
+        mockUIApplication.verifyOpenURLExpectations()
     }
 
     // MARK: - Analytics

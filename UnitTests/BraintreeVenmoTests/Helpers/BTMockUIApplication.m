@@ -22,7 +22,7 @@
     OCMStub([_mockApplication canOpenURL:[OCMArg any]]).andReturn(canOpenURL);
 }
 
-- (void)setupOpenURLCalledWith:(NSURL *)url scheme:(NSString *)scheme merchantID:(NSString *)merchantID {
+- (void)setupOpenURLExpectationsWithScheme:(NSString *)scheme merchantID:(NSString *)merchantID accessToken:(NSString *)accessToken {
     [[_mockApplication expect] openURL:[OCMArg checkWithBlock:^BOOL(id value){
         
         // This is the custom assertion block, we can inspect the `value` here
@@ -37,13 +37,15 @@
         if (![valueAsURL.absoluteString containsString:merchantID]) {
             return FALSE;
         }
-//        return [valueAsURL isEqualToURL:[NSURL URLWithString:@"www.stackoverflow.com"]];
+        if (![valueAsURL.absoluteString containsString:accessToken]) {
+            return FALSE;
+        }
         return YES;
     }]
     options:[OCMArg any] completionHandler:[OCMArg any]];
 }
 
-- (void)verifyOpenURLCalledWith:(NSURL *)url {
+- (void)verifyOpenURLExpectations {
     [_mockApplication verify];
 }
 

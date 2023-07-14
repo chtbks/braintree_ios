@@ -5,13 +5,18 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface BTMockUIApplication : NSObject
 
-//-(id)init; do i ned this
-
+/// Injects a stub return value for `UIApplication.shared.canOpenURL(_:)`
 - (void)stubCanOpenURLWith:(BOOL)canOpenURL;
 
-- (void)setupOpenURLCalledWith:(NSURL *)url scheme:(NSString *)scheme merchantID:(NSString *)merchantID;
+/// Defines the parameters that we expect `UIApplication.shared.openURL(_:options:completionHandler:)` to be called with.
+/// - Parameters:
+///   - scheme: The expected URL scheme
+///   - merchantID: The expected merchantID query item value
+///   - accessToken: The expected accessToken query item value
+- (void)setupOpenURLExpectationsWithScheme:(NSString *)scheme merchantID:(NSString *)merchantID accessToken:(NSString *)accessToken;
 
-- (void)verifyOpenURLCalledWith:(NSURL *)url;
+/// Run OCMock assertion on expected parameters.
+- (void)verifyOpenURLExpectations;
 
 @end
 

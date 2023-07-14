@@ -269,20 +269,9 @@ import BraintreeCore
     }
 
     func performAppSwitch(with appSwitchURL: URL, shouldVault vault: Bool, completion: @escaping (BTVenmoAccountNonce?, Error?) -> Void) {
-//        if let _ = application as? UIApplication {
-//            UIApplication.shared.open(appSwitchURL) { success in
-//                self.invokedOpenURLSuccessfully(success, shouldVault: vault, completion: completion)
-//            }
-        
-        UIApplication.shared.open(appSwitchURL, options: [:], completionHandler: { success in
+        UIApplication.shared.open(appSwitchURL) { success in
             self.invokedOpenURLSuccessfully(success, shouldVault: vault, completion: completion)
-        })
-        
-//        } else {
-//            application.open(appSwitchURL) { success in
-//                self.invokedOpenURLSuccessfully(success, shouldVault: vault, completion: completion)
-//            }
-//        }
+        }
     }
 
     func invokedOpenURLSuccessfully(_ success: Bool, shouldVault vault: Bool, completion: @escaping (BTVenmoAccountNonce?, Error?) -> Void) {
