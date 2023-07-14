@@ -21,7 +21,7 @@
     self.title = NSLocalizedString(@"Braintree", nil);
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action: @selector(tappedRefresh)];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Settings", nil) style:UIBarButtonItemStylePlain target:self action: @selector(tappedSettings)];
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor = [UIColor systemBackgroundColor];
     [self.navigationController setToolbarHidden:NO];
     if (@available(iOS 15.0, *)) {
         self.navigationController.navigationBar.scrollEdgeAppearance = self.navigationController.navigationBar.standardAppearance;
@@ -40,7 +40,7 @@
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     button.titleLabel.numberOfLines = 0;
     [button setTitle:NSLocalizedString(@"Ready", nil) forState:UIControlStateNormal];
-    [button.titleLabel setTextColor:[UIColor whiteColor]];
+    [button setTitleColor:UIColor.labelColor forState:UIControlStateNormal];
     [button addTarget:self action:@selector(tappedStatus) forControlEvents:UIControlEventTouchUpInside];
     button.titleLabel.textAlignment = NSTextAlignmentCenter;
     button.titleLabel.font = [UIFont systemFontOfSize:14];
@@ -50,7 +50,7 @@
     self.statusItem = [[UIBarButtonItem alloc] initWithCustomView:button];
     self.statusItem.enabled = NO;
     self.toolbarItems = @[flexSpaceLeft, self.statusItem, flexSpaceRight];
-    
+
     if (@available(iOS 15.0, *)) {
         self.navigationController.toolbar.scrollEdgeAppearance = self.navigationController.toolbar.standardAppearance;
     }
@@ -77,7 +77,7 @@
 - (void)updateStatus:(NSString *)status {
     dispatch_async(dispatch_get_main_queue(), ^{
         [(UIButton *)self.statusItem.customView setTitle:NSLocalizedString(status, nil) forState:UIControlStateNormal];
-        [(UIButton *)self.statusItem.customView setTitleColor:UIColor.blackColor forState:UIControlStateNormal];
+        [(UIButton *)self.statusItem.customView setTitleColor:UIColor.labelColor forState:UIControlStateNormal];
         NSLog(@"%@", ((UIButton *)self.statusItem.customView).titleLabel.text);
     });
 }
@@ -181,6 +181,12 @@
             self.currentDemoViewController = [self instantiateCurrentIntegrationViewControllerWithAuthorization:tokenizationKey];
             return;
         }
+
+        case BraintreeDemoAuthTypeUiTestHardcodedClientToken: {
+            NSString *uiTestClientToken = @"eyJ2ZXJzaW9uIjozLCJhdXRob3JpemF0aW9uRmluZ2VycHJpbnQiOiIxYzM5N2E5OGZmZGRkNDQwM2VjNzEzYWRjZTI3NTNiMzJlODc2MzBiY2YyN2M3NmM2OWVmZjlkMTE5MjljOTVkfGNyZWF0ZWRfYXQ9MjAxNy0wNC0wNVQwNjowNzowOC44MTUwOTkzMjUrMDAwMFx1MDAyNm1lcmNoYW50X2lkPWRjcHNweTJicndkanIzcW5cdTAwMjZwdWJsaWNfa2V5PTl3d3J6cWszdnIzdDRuYzgiLCJjb25maWdVcmwiOiJodHRwczovL2FwaS5zYW5kYm94LmJyYWludHJlZWdhdGV3YXkuY29tOjQ0My9tZXJjaGFudHMvZGNwc3B5MmJyd2RqcjNxbi9jbGllbnRfYXBpL3YxL2NvbmZpZ3VyYXRpb24ifQ==";
+
+            self.currentDemoViewController = [self instantiateCurrentIntegrationViewControllerWithAuthorization:uiTestClientToken];
+        }
     }
 }
 
@@ -195,7 +201,6 @@
     [self updateStatus:[NSString stringWithFormat:@"Presenting %@", NSStringFromClass([_currentDemoViewController class])]];
     _currentDemoViewController.progressBlock = [self progressBlock];
     _currentDemoViewController.completionBlock = [self completionBlock];
-    _currentDemoViewController.nonceStringCompletionBlock = [self nonceStringCompletionBlock];
     _currentDemoViewController.transactionBlock = [self transactionBlock];
     
     [self containIntegrationViewController:_currentDemoViewController];
@@ -256,18 +261,6 @@
     dispatch_once(&onceToken, ^{
         block = ^(id tokenized){
             self.latestTokenizedPayment = tokenized;
-            [self updateStatus:[NSString stringWithFormat:@"Got a nonce. Tap to make a transaction."]];
-        };
-    });
-    return block;
-}
-
-- (void (^)(NSString *paymentMethodNonceString))nonceStringCompletionBlock {
-    static id block;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        block = ^(id paymentMethodNonceString){
-            self.latestTokenizedPaymentString = paymentMethodNonceString;
             [self updateStatus:[NSString stringWithFormat:@"Got a nonce. Tap to make a transaction."]];
         };
     });

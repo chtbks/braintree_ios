@@ -155,9 +155,8 @@ import BraintreeDataCollector
             return
         }
         
-        var parameters: [String: Any] = ["paypal_account": response]
-        var account: [String: Any] = [:]
-        
+        var account: [String: Any] = response
+
         if paymentType == .checkout {
             account["options"] = ["validate": false]
             if let request  = payPalRequest as? BTPayPalCheckoutRequest {
@@ -168,21 +167,19 @@ import BraintreeDataCollector
         if let clientMetadataID {
             account["correlation_id"] = clientMetadataID
         }
+
+        var parameters: [String: Any] = ["paypal_account": account]
         
         if let payPalRequest, let merchantAccountID = payPalRequest.merchantAccountID {
             parameters["merchant_account_id"] = merchantAccountID
         }
-        
-        if !account.isEmpty {
-            parameters["paypal_account"] = account
-        }
-        
+
         let metadata = apiClient.metadata
         metadata.source = .payPalBrowser
         
         parameters["_meta"] = [
-            "source": metadata.sourceString,
-            "integration": metadata.integrationString,
+            "source": metadata.source.stringValue,
+            "integration": metadata.integration.stringValue,
             "sessionId": metadata.sessionID
         ]
         
@@ -258,13 +255,11 @@ import BraintreeDataCollector
                 }
 
                 guard let body,
-                      var approvalURL = body["paymentResource"]["redirectUrl"].asURL() ??
+                      let approvalURL = body["paymentResource"]["redirectUrl"].asURL() ??
                         body["agreementSetup"]["approvalUrl"].asURL() else {
                     self.notifyFailure(with: BTPayPalError.invalidURL, completion: completion)
                     return
                 }
-
-                approvalURL = self.decorate(approvalURL: approvalURL, for: request)
 
                 let pairingID = self.token(from: approvalURL)
                 let dataCollector = BTDataCollector(apiClient: self.apiClient)
@@ -282,51 +277,36 @@ import BraintreeDataCollector
         approvalURL = appSwitchURL
         webSessionReturned = false
         
-        webAuthenticationSession.start(url: appSwitchURL, context: self) { url, error in
-            if let error {
-                self.apiClient.sendAnalyticsEvent(BTPayPalAnalytics.tokenizeFailed)
-                self.notifyFailure(with: BTPayPalError.webSessionError(error), completion: completion)
+        webAuthenticationSession.start(url: appSwitchURL, context: self) { [weak self] url, error in
+            guard let self else {
+                completion(nil, BTPayPalError.deallocated)
                 return
             }
 
-            self.handleBrowserSwitchReturn(url, paymentType: paymentType, completion: completion)
-        } sessionDidAppear: { didAppear in
-            if didAppear {
-                self.apiClient.sendAnalyticsEvent(BTPayPalAnalytics.browserPresentationSucceeded)
-            } else {
-                self.apiClient.sendAnalyticsEvent(BTPayPalAnalytics.browserPresentationFailed)
+            if let error {
+                notifyFailure(with: BTPayPalError.webSessionError(error), completion: completion)
+                return
             }
-        } sessionDidCancel: {
-            if !self.webSessionReturned {
+
+            handleBrowserSwitchReturn(url, paymentType: paymentType, completion: completion)
+        } sessionDidAppear: { [self] didAppear in
+            if didAppear {
+                apiClient.sendAnalyticsEvent(BTPayPalAnalytics.browserPresentationSucceeded)
+            } else {
+                apiClient.sendAnalyticsEvent(BTPayPalAnalytics.browserPresentationFailed)
+            }
+        } sessionDidCancel: { [self] in
+            if !webSessionReturned {
                 // User tapped system cancel button on permission alert
-                self.apiClient.sendAnalyticsEvent(BTPayPalAnalytics.browserLoginAlertCanceled)
+                apiClient.sendAnalyticsEvent(BTPayPalAnalytics.browserLoginAlertCanceled)
             }
 
             // User canceled by breaking out of the PayPal browser switch flow
             // (e.g. System "Cancel" button on permission alert or browser during ASWebAuthenticationSession)
-            self.apiClient.sendAnalyticsEvent(BTPayPalAnalytics.browserLoginCanceled)
-            self.notifyCancel(completion: completion)
+            apiClient.sendAnalyticsEvent(BTPayPalAnalytics.browserLoginCanceled)
+            notifyCancel(completion: completion)
             return
         }
-    }
-    
-    private func decorate(approvalURL: URL, for request: BTPayPalRequest) -> URL {
-        guard let request = payPalRequest as? BTPayPalCheckoutRequest,
-              var approvalURLComponents = URLComponents(url: approvalURL, resolvingAgainstBaseURL: false) else {
-            return approvalURL
-        }
-
-        let userActionValue = request.userAction.stringValue
-        guard userActionValue.count > 0 else {
-            return approvalURL
-        }
-        
-        let userActionQueryItem = URLQueryItem(name: "useraction", value: userActionValue)
-        var queryItems = approvalURLComponents.queryItems ?? []
-        queryItems.append(userActionQueryItem)
-        approvalURLComponents.queryItems = queryItems
-        
-        return approvalURLComponents.url ?? approvalURL
     }
     
     private func token(from approvalURL: URL) -> String {

@@ -4,6 +4,8 @@ import Foundation
 /// - Note: It also manages authentication via tokenization key and provides access to a merchant's gateway configuration.
 @objcMembers public class BTAPIClient: NSObject {
 
+    /// :nodoc: This typealias is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
+    @_documentation(visibility: private)
     public typealias RequestCompletion = (BTJSON?, HTTPURLResponse?, Error?) -> Void
 
     // MARK: - Public Properties
@@ -121,6 +123,8 @@ import Foundation
 
     // MARK: - Public Methods
 
+    /// :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
+    ///
     ///  Provides configuration data as a `BTJSON` object.
     ///
     ///  The configuration data can be used by supported payment options to configure themselves
@@ -129,6 +133,7 @@ import Foundation
     /// - Note: This method is asynchronous because it requires a network call to fetch the
     /// configuration for a merchant account from Braintree servers. This configuration is
     /// cached on subsequent calls for better performance.
+    @_documentation(visibility: private)
     public func fetchOrReturnRemoteConfiguration(_ completion: @escaping (BTConfiguration?, Error?) -> Void) {
         // Fetches or returns the configuration and caches the response in the GET BTHTTP call if successful
         //
@@ -147,7 +152,10 @@ import Foundation
         let parameters: [String: Any] = ["configVersion": "3"]
 
         configurationHTTP?.get(configPath, parameters: parameters, shouldCache: true) { [weak self] body, response, error in
-            guard let self else { return }
+            guard let self else {
+                completion(nil, BTAPIClientError.deallocated)
+                return
+            }
 
             if error != nil {
                 completion(nil, error)
@@ -158,32 +166,32 @@ import Foundation
             } else {
                 configuration = BTConfiguration(json: body)
 
-                if self.apiHTTP == nil {
+                if apiHTTP == nil {
                     let apiURL: URL? = configuration?.json?["clientApiUrl"].asURL()
                     let accessToken: String? = configuration?.json?["braintreeApi"]["accessToken"].asString()
 
                     if let apiURL, let accessToken {
-                        self.apiHTTP = BTAPIHTTP(url: apiURL, accessToken: accessToken)
+                        apiHTTP = BTAPIHTTP(url: apiURL, accessToken: accessToken)
                     }
                 }
 
-                if self.http == nil {
+                if http == nil {
                     let baseURL: URL? = configuration?.json?["clientApiUrl"].asURL()
 
-                    if let clientToken = self.clientToken, let baseURL {
-                        self.http = BTHTTP(url: baseURL, authorizationFingerprint: clientToken.authorizationFingerprint)
-                    } else if let tokenizationKey = self.tokenizationKey, let baseURL {
-                        self.http = BTHTTP(url: baseURL, tokenizationKey: tokenizationKey)
+                    if let clientToken, let baseURL {
+                        http = BTHTTP(url: baseURL, authorizationFingerprint: clientToken.authorizationFingerprint)
+                    } else if let tokenizationKey, let baseURL {
+                        http = BTHTTP(url: baseURL, tokenizationKey: tokenizationKey)
                     }
                 }
 
-                if self.graphQLHTTP == nil {
-                    let graphQLBaseURL: URL? = self.graphQLURL(forEnvironment: configuration?.environment ?? "")
+                if graphQLHTTP == nil {
+                    let graphQLBaseURL: URL? = graphQLURL(forEnvironment: configuration?.environment ?? "")
 
-                    if let clientToken = self.clientToken, let graphQLBaseURL {
-                        self.graphQLHTTP = BTGraphQLHTTP(url: graphQLBaseURL, authorizationFingerprint: clientToken.authorizationFingerprint)
-                    } else if let tokenizationKey = self.tokenizationKey, let graphQLBaseURL {
-                        self.graphQLHTTP = BTGraphQLHTTP(url: graphQLBaseURL, tokenizationKey: tokenizationKey)
+                    if let clientToken, let graphQLBaseURL {
+                        graphQLHTTP = BTGraphQLHTTP(url: graphQLBaseURL, authorizationFingerprint: clientToken.authorizationFingerprint)
+                    } else if let tokenizationKey, let graphQLBaseURL {
+                        graphQLHTTP = BTGraphQLHTTP(url: graphQLBaseURL, tokenizationKey: tokenizationKey)
                     }
                 }
             }
@@ -237,7 +245,8 @@ import Foundation
         }
     }
 
-    /// :nodoc:
+    /// :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
+    ///  
     /// Perfom an HTTP GET on a URL composed of the configured from environment and the given path.
     /// - Parameters:
     ///   - path: The endpoint URI path.
@@ -252,7 +261,8 @@ import Foundation
         get(path, parameters: parameters, httpType: .gateway, completion: completion)
     }
 
-    /// :nodoc:
+    /// :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
+    ///
     /// Perfom an HTTP POST on a URL composed of the configured from environment and the given path.
     /// - Parameters:
     ///   - path: The endpoint URI path.
@@ -267,40 +277,46 @@ import Foundation
         post(path, parameters: parameters, httpType: .gateway, completion: completion)
     }
 
-    /// :nodoc:
+    /// :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     @_documentation(visibility: private)
     @objc(GET:parameters:httpType:completion:)
     public func get(_ path: String, parameters: [String: String]? = nil, httpType: BTAPIClientHTTPService, completion: @escaping RequestCompletion) {
         fetchOrReturnRemoteConfiguration { [weak self] configuration, error in
-            guard let self else { return }
+            guard let self else {
+                completion(nil, nil, BTAPIClientError.deallocated)
+                return
+            }
 
             if let error {
                 completion(nil, nil, error)
                 return
             }
 
-            self.http(for: httpType)?.get(path, parameters: parameters, completion: completion)
+            http(for: httpType)?.get(path, parameters: parameters, completion: completion)
         }
     }
 
-    /// :nodoc:
+    /// :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     @_documentation(visibility: private)
     @objc(POST:parameters:httpType:completion:)
     public func post(_ path: String, parameters: [String: Any]? = nil, httpType: BTAPIClientHTTPService, completion: @escaping RequestCompletion) {
         fetchOrReturnRemoteConfiguration { [weak self] configuration, error in
-            guard let self else { return }
+            guard let self else {
+                completion(nil, nil, BTAPIClientError.deallocated)
+                return
+            }
 
             if let error {
                 completion(nil, nil, error)
                 return
             }
 
-            let postParameters = self.metadataParametersWith(parameters, for: httpType)
-            self.http(for: httpType)?.post(path, parameters: postParameters, completion: completion)
+            let postParameters = metadataParametersWith(parameters, for: httpType)
+            http(for: httpType)?.post(path, parameters: postParameters, completion: completion)
         }
     }
 
-    ///  :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
+    /// :nodoc: This method is exposed for internal Braintree use only. Do not use. It is not covered by Semantic Versioning and may change or be removed at any time.
     @_documentation(visibility: private)
     public func sendAnalyticsEvent(_ eventName: String, errorDescription: String? = nil) {
         analyticsService?.sendAnalyticsEvent(
