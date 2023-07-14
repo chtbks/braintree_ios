@@ -22,6 +22,14 @@
     OCMStub([_mockApplication canOpenURL:[OCMArg any]]).andReturn(canOpenURL);
 }
 
+- (void)stubOpenURLWithSuccess:(BOOL)success {
+    if (success) {
+        OCMStub([_mockApplication openURL:OCMOCK_ANY options:OCMOCK_ANY completionHandler:([OCMArg invokeBlockWithArgs:@YES, nil])]);
+    } else {
+        OCMStub([_mockApplication openURL:OCMOCK_ANY options:OCMOCK_ANY completionHandler:([OCMArg invokeBlockWithArgs:@NO, nil])]);
+    }
+}
+
 - (void)setupOpenURLExpectationsWithScheme:(NSString *)expectedScheme
                                       host:(NSString *)expectedHost
                                       path:(NSString *)expectedPath
@@ -57,10 +65,6 @@
         return YES;
     }]
     options:[OCMArg any] completionHandler:[OCMArg any]];
-
-    
-    // TODO: - After we verify that we have expected params into this func, it isn't calling it's own completion ever
-    
 }
 
 - (void)verifyOpenURLExpectations {

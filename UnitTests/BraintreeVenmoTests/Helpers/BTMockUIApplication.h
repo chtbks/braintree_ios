@@ -8,6 +8,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// Injects a stub return value for `UIApplication.shared.canOpenURL(_:)`
 - (void)stubCanOpenURLWith:(BOOL)canOpenURL;
 
+- (void)stubOpenURLWithSuccess:(BOOL)success;
+
 /// Defines the parameters that we expect `UIApplication.shared.openURL(_:options:completionHandler:)` to be called with.
 /// - Parameters:
 ///   - scheme: The expected URL scheme
