@@ -22,7 +22,10 @@
     OCMStub([_mockApplication canOpenURL:[OCMArg any]]).andReturn(canOpenURL);
 }
 
-- (void)setupOpenURLExpectationsWithScheme:(NSString *)scheme merchantID:(NSString *)merchantID accessToken:(NSString *)accessToken {
+- (void)setupOpenURLExpectationsWithScheme:(NSString *)expectedScheme
+                                      host:(NSString *)expectedHost
+                                      path:(NSString *)expectedPath
+                                queryItems:(NSArray<NSURLQueryItem *>*)expectedQueryItems {
     [[_mockApplication expect] openURL:[OCMArg checkWithBlock:^BOOL(id value){
         
         // This is the custom assertion block, we can inspect the `value` here
@@ -31,18 +34,33 @@
             return NO;
         }
         NSURL *valueAsURL = (NSURL *)value;
-        if (![valueAsURL.scheme isEqualToString:scheme]) {
+        if (![valueAsURL.scheme isEqualToString:expectedScheme]) {
             return FALSE;
         }
-        if (![valueAsURL.absoluteString containsString:merchantID]) {
+        
+        if (![valueAsURL.host isEqualToString:expectedHost]) {
             return FALSE;
         }
-        if (![valueAsURL.absoluteString containsString:accessToken]) {
+        
+        if (![valueAsURL.path isEqualToString:expectedPath]) {
             return FALSE;
+        }
+        
+        NSURLComponents *urlComponents = [[NSURLComponents alloc] initWithURL:valueAsURL resolvingAgainstBaseURL:YES];
+        NSArray<NSURLQueryItem *> *actualQueryItems = urlComponents.queryItems;
+        
+        for (NSURLQueryItem *expectedQueryItem in expectedQueryItems) {
+            if (![actualQueryItems containsObject:expectedQueryItem]) {
+                return FALSE;
+            }
         }
         return YES;
     }]
     options:[OCMArg any] completionHandler:[OCMArg any]];
+
+    
+    // TODO: - After we verify that we have expected params into this func, it isn't calling it's own completion ever
+    
 }
 
 - (void)verifyOpenURLExpectations {
