@@ -247,8 +247,10 @@ import BraintreeCore
     // MARK: - App Switch Methods
 
     func handleOpen(_ url: URL) {
-        guard let returnURL = BTVenmoAppSwitchReturnURL(url: url) else {          
-            notifyFailure(with: BTVenmoError.invalidReturnURL(url.absoluteString), completion: appSwitchCompletion)
+        let fixedURL = URL(string: url.absoluteString.replacingOccurrences(of: "#", with: "?"))!
+        
+        guard let returnURL = BTVenmoAppSwitchReturnURL(url: fixedURL) else {
+            notifyFailure(with: BTVenmoError.invalidReturnURL(fixedURL.absoluteString), completion: appSwitchCompletion)
             return
         }
 
@@ -324,6 +326,9 @@ import BraintreeCore
     }
 
     func performAppSwitch(with appSwitchURL: URL, shouldVault vault: Bool, completion: @escaping (BTVenmoAccountNonce?, Error?) -> Void) {
+        
+        print(UIApplication.shared.canOpenURL(appSwitchURL))
+
         if let _ = application as? UIApplication {
             UIApplication.shared.open(appSwitchURL) { success in
                 self.invokedOpenURLSuccessfully(success, shouldVault: vault, completion: completion)
@@ -385,13 +390,13 @@ import BraintreeCore
             throw BTVenmoError.disabled
         }
 
-        if !isVenmoAppInstalled() {
-            throw BTVenmoError.appNotAvailable
-        }
-
-        guard bundle.object(forInfoDictionaryKey: "CFBundleDisplayName") != nil else {
-            throw BTVenmoError.bundleDisplayNameMissing
-        }
+//        if !isVenmoAppInstalled() {
+//            throw BTVenmoError.appNotAvailable
+//        }
+//
+//        guard bundle.object(forInfoDictionaryKey: "CFBundleDisplayName") != nil else {
+//            throw BTVenmoError.bundleDisplayNameMissing
+//        }
 
         return true
     }
