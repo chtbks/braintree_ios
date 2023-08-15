@@ -181,24 +181,27 @@ import BraintreeCore
                     )
                     return
                 }
-
-                guard let appSwitchURL = BTVenmoAppSwitchRedirectURL().appSwitch(
-                    returnURLScheme: returnURLScheme,
-                    forMerchantID: merchantProfileID,
-                    accessToken: configuration.venmoAccessToken,
-                    bundleDisplayName: bundleDisplayName,
-                    environment: configuration.venmoEnvironment,
-                    paymentContextID: paymentContextID,
-                    metadata: metadata
-                ) else {
+                
+                do {
+                    let appSwitchURL = try BTVenmoAppSwitchRedirectURL(
+                        returnURLScheme: returnURLScheme,
+                        forMerchantID: merchantProfileID,
+                        accessToken: configuration.venmoAccessToken,
+                        bundleDisplayName: bundleDisplayName,
+                        environment: configuration.venmoEnvironment,
+                        paymentContextID: paymentContextID,
+                        metadata: metadata
+                    )
+                    
+                    // TODO: - Add merchant opt-in to toggle b/w urlScheme & universalLink
+                    self.performAppSwitch(with: appSwitchURL.urlSchemeLink(), shouldVault: request.vault, completion: completion)
+                } catch {
                     self.notifyFailure(
                         with: BTVenmoError.invalidRedirectURL("The request URL could not be constructed or was nil."),
                         completion: completion
                     )
                     return
                 }
-
-                self.performAppSwitch(with: appSwitchURL, shouldVault: request.vault, completion: completion)
             }
         }
     }
@@ -222,13 +225,13 @@ import BraintreeCore
     /// Returns true if the proper Venmo app is installed and configured correctly, returns false otherwise.
     @objc public func isVenmoAppInstalled() -> Bool {
         if let _ = application as? UIApplication {
-            guard let appSwitchURL = BTVenmoAppSwitchRedirectURL().baseAppSwitchURL else {
+            guard let appSwitchURL = BTVenmoAppSwitchRedirectURL.baseAppSwitchURL else {
                 return false
             }
 
             return UIApplication.shared.canOpenURL(appSwitchURL)
         } else {
-            return application.canOpenURL(BTVenmoAppSwitchRedirectURL().baseAppSwitchURL ?? URL(string: "")!)
+            return application.canOpenURL(BTVenmoAppSwitchRedirectURL.baseAppSwitchURL ?? URL(string: "")!)
         }
     }
 
