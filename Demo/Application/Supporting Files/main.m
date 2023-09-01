@@ -5,6 +5,6 @@
 int main(int argc, char * argv[])
 {
     @autoreleasepool {
-        return UIApplicationMain(argc, argv, nil, NSStringFromClass([BraintreeDemoAppDelegate class]));
+ad        return UIApplicationMain(argc, argv, nil, NSStringFromClass([BraintreeDemoAppDelegate class]));
     }
 }

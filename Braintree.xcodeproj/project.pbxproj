@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 53;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -87,6 +87,7 @@
 		80BA64AC29D788E000E15264 /* BTLocalPaymentResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80BA64AB29D788E000E15264 /* BTLocalPaymentResult.swift */; };
 		80BA64B229D7937E00E15264 /* BTLocalPaymentRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80BA64B129D7937E00E15264 /* BTLocalPaymentRequest.swift */; };
 		80BA64B429D795D000E15264 /* BTLocalPaymentRequestDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80BA64B329D795D000E15264 /* BTLocalPaymentRequestDelegate.swift */; };
+		80C5C0D92AA243C9007B6CC8 /* OHHTTPStubsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 80C5C0D82AA243C9007B6CC8 /* OHHTTPStubsSwift */; };
 		80CD34002A6042FC009545F5 /* CardinalSessionTestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80CD33FF2A6042FC009545F5 /* CardinalSessionTestable.swift */; };
 		80CD34012A604307009545F5 /* MockCardinalSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80CD33FD2A603892009545F5 /* MockCardinalSession.swift */; };
 		80CF988529DB64D400D51979 /* BTLocalPaymentError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80CF988429DB64D400D51979 /* BTLocalPaymentError.swift */; };
@@ -1076,6 +1077,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A9E5C23324FD6DAE00EE691F /* BraintreeTestShared.framework in Frameworks */,
+				80C5C0D92AA243C9007B6CC8 /* OHHTTPStubsSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2207,6 +2209,9 @@
 				A9E5C23224FD6DAA00EE691F /* PBXTargetDependency */,
 			);
 			name = BraintreeCoreTests;
+			packageProductDependencies = (
+				80C5C0D82AA243C9007B6CC8 /* OHHTTPStubsSwift */,
+			);
 			productName = BraintreeCoreTests;
 			productReference = A9E5C22424FD6D0800EE691F /* BraintreeCoreTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -2353,6 +2358,7 @@
 			mainGroup = A75DA343192138F000D997A2;
 			packageReferences = (
 				BEE2E4B52900436600C03FDD /* XCRemoteSwiftPackageReference "paypalcheckout-ios" */,
+				80C5C0D72AA243C9007B6CC8 /* XCRemoteSwiftPackageReference "OHHTTPStubs" */,
 			);
 			productRefGroup = A75DA3521921394200D997A2 /* Products */;
 			projectDirPath = "";
@@ -6028,6 +6034,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		80C5C0D72AA243C9007B6CC8 /* XCRemoteSwiftPackageReference "OHHTTPStubs" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/AliSoftware/OHHTTPStubs.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 9.1.0;
+			};
+		};
 		BEE2E4B52900436600C03FDD /* XCRemoteSwiftPackageReference "paypalcheckout-ios" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/paypal/paypalcheckout-ios/";
@@ -6039,6 +6053,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		80C5C0D82AA243C9007B6CC8 /* OHHTTPStubsSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 80C5C0D72AA243C9007B6CC8 /* XCRemoteSwiftPackageReference "OHHTTPStubs" */;
+			productName = OHHTTPStubsSwift;
+		};
 		BE9D76BB2A03F92F00DF9023 /* PayPalCheckout */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = BEE2E4B52900436600C03FDD /* XCRemoteSwiftPackageReference "paypalcheckout-ios" */;
