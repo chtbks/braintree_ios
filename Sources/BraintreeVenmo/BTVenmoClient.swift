@@ -194,7 +194,7 @@ import BraintreeCore
                     )
                     
                     // TODO: - Add merchant opt-in to toggle b/w urlScheme & universalLink
-                    self.performAppSwitch(with: appSwitchURL.urlSchemeLink(), shouldVault: request.vault, completion: completion)
+                    self.performAppSwitch(with: appSwitchURL.universalLink(), shouldVault: request.vault, completion: completion)
                 } catch {
                     self.notifyFailure(
                         with: BTVenmoError.invalidRedirectURL("The request URL could not be constructed or was nil."),
