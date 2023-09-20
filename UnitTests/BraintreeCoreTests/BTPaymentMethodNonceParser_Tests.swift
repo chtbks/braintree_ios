@@ -3,54 +3,49 @@ import XCTest
 
 class BTPaymentMethodNonceParser_Tests: XCTestCase {
     var parser : BTPaymentMethodNonceParser = BTPaymentMethodNonceParser()
+    
+    func testParseJSON_forPayPal_returnsValidNonceType() {
+        let JSON = BTJSON(value: [
+            "nonce": "a-nonce",
+            "type": "PayPalAccount"
+            ] as [String: Any])
 
-    func testRegisterType_addsTypeToTypes() {
-        parser.registerType("MyType") { _ -> BTPaymentMethodNonce? in return nil}
+        let unknownNonce = parser.parseJSON(JSON)!
 
-        XCTAssertTrue(parser.allTypes.contains("MyType"))
+        XCTAssertEqual(unknownNonce.nonce, "a-nonce")
+        XCTAssertEqual(unknownNonce.type, "PayPalAccount")
     }
     
-    func testAllTypes_whenTypeIsNotRegistered_doesntContainType() {
-        XCTAssertEqual(parser.allTypes.count, 0)
+    func testParseJSON_forApplePay_returnsValidNonceType() {
+        // todo
     }
     
-    func testIsTypeAvailable_whenTypeIsRegistered_isTrue() {
-        parser.registerType("MyType") { _ -> BTPaymentMethodNonce? in return nil}
-        XCTAssertTrue(parser.isTypeAvailable("MyType"))
+    func testParseJSON_forVenmo_returnsValidNonceType() {
+        // todo
     }
     
-    func testIsTypeAvailable_whenTypeIsNotRegistered_isFalse() {
-        XCTAssertFalse(parser.isTypeAvailable("MyType"))
-    }
-
-    func testParseJSON_whenTypeIsRegistered_callsParsingBlock() {
-        let expectation = self.expectation(description: "Parsing block called")
-        parser.registerType("MyType") { _ -> BTPaymentMethodNonce? in
-            expectation.fulfill()
-            return nil
-        }
-
-        let _ = parser.parseJSON(BTJSON(), withParsingBlockForType: "MyType")
-
-        waitForExpectations(timeout: 3, handler: nil)
+    func testParseJSON_forCreditCard_returnsValidNonceType() {
+        // todo
     }
     
     func testParseJSON_whenTypeIsNotRegisteredAndJSONContainsNonce_returnsBasicTokenizationObject() {
-        let json = BTJSON(value: ["nonce": "valid-nonce"])
+        let json = BTJSON(value: ["nonce": "valid-nonce", "type": "bogus"])
 
-        let paymentMethodNonce = parser.parseJSON(json, withParsingBlockForType: "MyType")
+        let paymentMethodNonce = parser.parseJSON(json)
         
         XCTAssertEqual(paymentMethodNonce?.nonce, "valid-nonce")
+        XCTAssertEqual(paymentMethodNonce?.type, "Unknown")
     }
     
     func testParseJSON_whenTypeIsNotRegisteredAndJSONDoesNotContainNonce_returnsNil() {
-        let paymentMethodNonce = parser.parseJSON(BTJSON(value: ["details": [] as [Any?]]), withParsingBlockForType: "MyType")
-        
+        let json = BTJSON(value: ["type": "bogus"])
+
+        let paymentMethodNonce = parser.parseJSON(json)
+
        XCTAssertNil(paymentMethodNonce)
     }
 
     func testSharedParser_whenTypeIsUnknown_returnsBasePaymentMethodNonce() {
-        let sharedParser = BTPaymentMethodNonceParser.shared
         let JSON = BTJSON(value: [
             "consumed": false,
             "description": "Some thing",
@@ -61,7 +56,7 @@ class BTPaymentMethodNonceParser_Tests: XCTestCase {
             "default": true
             ] as [String: Any])
 
-        let unknownNonce = sharedParser.parseJSON(JSON, withParsingBlockForType: "asdfasdfasdf")!
+        let unknownNonce = parser.parseJSON(JSON)!
 
         XCTAssertEqual(unknownNonce.nonce, "a-nonce")
         XCTAssertEqual(unknownNonce.type, "Unknown")

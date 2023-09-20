@@ -233,8 +233,7 @@ import Foundation
             var paymentMethodNonces: [BTPaymentMethodNonce] = []
 
             body?["paymentMethods"].asArray()?.forEach { paymentInfo in
-                let type: String? = paymentInfo["type"].asString()
-                let paymentMethodNonce: BTPaymentMethodNonce? = BTPaymentMethodNonceParser.shared.parseJSON(paymentInfo, withParsingBlockForType: type)
+                let paymentMethodNonce = BTPaymentMethodNonceParser().parseJSON(paymentInfo)
 
                 if let paymentMethodNonce {
                     paymentMethodNonces.append(paymentMethodNonce)
