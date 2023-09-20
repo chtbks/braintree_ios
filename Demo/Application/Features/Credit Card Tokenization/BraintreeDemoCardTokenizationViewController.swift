@@ -31,15 +31,19 @@ class BraintreeDemoCardTokenizationViewController: BraintreeDemoPaymentButtonBas
         let card = newCard()
 
         setFieldsEnabled(false)
-        cardClient.tokenize(card) { nonce, error in
-            self.setFieldsEnabled(true)
-
-            guard let nonce else {
-                self.progressBlock(error?.localizedDescription)
-                return
-            }
-
-            self.completionBlock(nonce)
+//        cardClient.tokenize(card) { nonce, error in
+//            self.setFieldsEnabled(true)
+//
+//            guard let nonce else {
+//                self.progressBlock(error?.localizedDescription)
+//                return
+//            }
+//
+//            self.completionBlock(nonce)
+//        }
+        
+        apiClient.fetchPaymentMethodNonces { nonces, error in
+            print(nonces!)
         }
     }
 
