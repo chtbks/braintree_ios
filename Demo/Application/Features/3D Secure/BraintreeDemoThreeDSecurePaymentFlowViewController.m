@@ -7,6 +7,7 @@
 @property (nonatomic, strong) BTPaymentFlowDriver *paymentFlowDriver;
 @property (nonatomic, strong) UILabel *callbackCountLabel;
 @property (nonatomic, strong) BTCardFormView *cardFormView;
+@property (nonatomic, strong) UIButton *autofillButton3DS;
 @property (nonatomic) int callbackCount;
 
 @end
@@ -22,11 +23,21 @@
     self.cardFormView.translatesAutoresizingMaskIntoConstraints = NO;
     self.cardFormView.hidePhoneNumberField = YES;
 
+    self.autofillButton3DS = [UIButton buttonWithType:UIButtonTypeSystem];
+    self.autofillButton3DS.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.autofillButton3DS setTitle:NSLocalizedString(@"Autofill 3DS Card", nil) forState:UIControlStateNormal];
+    [self.autofillButton3DS addTarget:self action:@selector(tappedToAutofill3DSCard) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:self.autofillButton3DS];
+
     [NSLayoutConstraint activateConstraints:@[
         [self.cardFormView.topAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.topAnchor],
         [self.cardFormView.leadingAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.leadingAnchor],
         [self.cardFormView.trailingAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.trailingAnchor],
-        [self.cardFormView.heightAnchor constraintEqualToConstant:200]
+        [self.cardFormView.heightAnchor constraintEqualToConstant:200],
+        
+        [self.autofillButton3DS.topAnchor constraintEqualToAnchor:self.cardFormView.bottomAnchor constant:10],
+        [self.autofillButton3DS.leadingAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.leadingAnchor constant:10],
+        [self.autofillButton3DS.heightAnchor constraintEqualToConstant:30],
     ]];
 }
 
@@ -47,6 +58,8 @@
     [threeDSecureButtonsContainer addSubview:self.callbackCountLabel];
     self.callbackCount = 0;
     [self updateCallbackCount];
+    
+    self.centerYConstant = 100;
 
     [NSLayoutConstraint activateConstraints:@[
         [verifyNewCardButton.topAnchor constraintEqualToAnchor:threeDSecureButtonsContainer.topAnchor],
@@ -83,6 +96,26 @@
 
 - (void)updateCallbackCount {
     self.callbackCountLabel.text = [NSString stringWithFormat:@"Callback Count: %i", self.callbackCount];
+}
+
+-(void)tappedToAutofill3DSCard {
+    self.cardFormView.cardNumberTextField.text = @"4000000000001091";
+    self.cardFormView.expirationTextField.text = self.generateFutureDate;
+    self.cardFormView.cvvTextField.text = @"123";
+    self.cardFormView.postalCodeTextField.text = @"12345";
+}
+
+-(NSString *)generateFutureDate {
+    NSString *monthString = @"12";
+
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yy"];
+
+    NSDate *futureYear = [[NSCalendar currentCalendar]dateByAddingUnit:NSCalendarUnitYear value:3 toDate:[NSDate date] options:0];
+    NSString *yearString = [dateFormatter stringFromDate:futureYear];
+    NSString *futureDateString = [NSString stringWithFormat:@"%@/%@", monthString, yearString];
+
+    return futureDateString;
 }
 
 /// "Tokenize and Verify New Card"
@@ -125,6 +158,8 @@
         request.billingAddress = billingAddress;
         request.email = @"test@example.com";
         request.shippingMethod = BTThreeDSecureShippingMethodSameDay;
+        
+        // MARK: v2 Customization
 
         BTThreeDSecureV2UICustomization *ui = [BTThreeDSecureV2UICustomization new];
         BTThreeDSecureV2ToolbarCustomization *toolbarCustomization = [BTThreeDSecureV2ToolbarCustomization new];
@@ -134,13 +169,27 @@
         [toolbarCustomization setTextColor:@"#222222"];
         [toolbarCustomization setTextFontSize:18];
         [toolbarCustomization setTextFontName:@"AmericanTypewriter"];
+        
+        BTThreeDSecureV2ButtonCustomization *buttonCustomization = [BTThreeDSecureV2ButtonCustomization new];
+        [buttonCustomization setBackgroundColor:@"#FFC0CB"];
+        [buttonCustomization setCornerRadius:20];
+        
+        BTThreeDSecureV2TextBoxCustomization *textBoxCustomization = [BTThreeDSecureV2TextBoxCustomization new];
+        [textBoxCustomization setBorderColor:@"#ADD8E6"];
+        [textBoxCustomization setCornerRadius:10];
+        [textBoxCustomization setBorderWidth:5];
+        
+        BTThreeDSecureV2LabelCustomization *labelCustomization = [BTThreeDSecureV2LabelCustomization new];
+        [labelCustomization setHeadingTextColor:@"#A020F0"];
+        [labelCustomization setHeadingTextFontSize:24];
+        [labelCustomization setHeadingTextFontName:@"AmericanTypewriter"];
+        
         [ui setToolbarCustomization:toolbarCustomization];
-        request.v2UICustomization = ui;
+        [ui setButtonCustomization:buttonCustomization buttonType:ButtonTypeVerify];
+        [ui setTextBoxCustomization:textBoxCustomization];
+        [ui setLabelCustomization:labelCustomization];
 
-        BTThreeDSecureV1UICustomization *v1UICustomization = [BTThreeDSecureV1UICustomization new];
-        v1UICustomization.redirectButtonText = @"Return to Demo App";
-        v1UICustomization.redirectDescription = @"Please use the button above if you are not automatically redirected to the app.";
-        request.v1UICustomization = v1UICustomization;
+        request.v2UICustomization = ui;
 
         [self.paymentFlowDriver startPaymentFlow:request completion:^(BTPaymentFlowResult * _Nonnull result, NSError * _Nonnull error) {
             self.callbackCount++;

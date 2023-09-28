@@ -1,4 +1,5 @@
 #import "BraintreeDemoBTDataCollectorViewController.h"
+#import "Demo-Swift.h"
 @import BraintreeDataCollector;
 @import PayPalDataCollector;
 @import CoreLocation;
@@ -81,12 +82,33 @@
 }
 
 - (IBAction)tappedCollectPayPal {
-    self.dataLabel.text = [PPDataCollector collectPayPalDeviceData];
+    BOOL isSandbox;
+    
+    switch (BraintreeDemoSettings.currentEnvironment) {
+        case BraintreeDemoEnvironmentSandbox:
+            isSandbox = TRUE;
+            break;
+        case BraintreeDemoEnvironmentProduction:
+            isSandbox = FALSE;
+            break;
+        case BraintreeDemoEnvironmentCustom:
+            isSandbox = FALSE;
+            break;
+    };
+    
+    self.dataLabel.text = [PPDataCollector collectPayPalDeviceDataWithIsSandbox:isSandbox];
     self.progressBlock(@"Collected PayPal clientMetadataID!");
 }
 
 - (IBAction)tappedRequestLocationAuthorization:(__unused id)sender {
-    switch ([CLLocationManager authorizationStatus]) {
+    CLAuthorizationStatus locationStatus = kCLAuthorizationStatusNotDetermined;
+    if (@available(iOS 14, *)) {
+        locationStatus = [CLLocationManager new].authorizationStatus;
+    } else {
+        locationStatus = [CLLocationManager authorizationStatus];
+    }
+    
+    switch (locationStatus) {
         case kCLAuthorizationStatusNotDetermined:
             [self.locationManager requestWhenInUseAuthorization];
             break;

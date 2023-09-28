@@ -1,13 +1,13 @@
 Pod::Spec.new do |s|
   s.name             = "Braintree"
-  s.version          = "5.6.3"
+  s.version          = "5.19.0"
   s.summary          = "Braintree iOS SDK: Helps you accept card and alternative payments in your iOS app."
   s.description      = <<-DESC
                        Braintree is a full-stack payments platform for developers
 
                        This CocoaPod will help you accept payments in your iOS app.
 
-                       Check out our development portal at https://developers.braintreepayments.com.
+                       Check out our development portal at https://developer.paypal.com/braintree/docs.
   DESC
   s.homepage         = "https://developer.paypal.com/braintree"
   s.documentation_url = "https://developer.paypal.com/braintree/docs/start/hello-client"
@@ -66,9 +66,21 @@ Pod::Spec.new do |s|
     s.dependency "Braintree/PayPalDataCollector"
   end
 
+  s.subspec "SEPADirectDebit" do |s|
+    s.source_files = "Sources/BraintreeSEPADirectDebit/*.swift"
+    s.dependency "Braintree/Core"
+  end
+
   s.subspec "PayPalDataCollector" do |s|
     s.source_files = "Sources/PayPalDataCollector/**/*.{swift}"
     s.vendored_frameworks = "Frameworks/XCFrameworks/PPRiskMagnes.xcframework"
+  end
+
+  s.subspec "PayPalNativeCheckout" do |s|
+    s.source_files = "Sources/BraintreePayPalNativeCheckout/*.swift"
+    s.dependency "Braintree/Core"
+    s.dependency "Braintree/PayPal"
+    s.dependency "PayPalCheckout", '0.110.0'
   end
 
   s.subspec "ThreeDSecure" do |s|

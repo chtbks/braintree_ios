@@ -36,6 +36,14 @@ let package = Package(
             targets: ["BraintreePayPal", "PPRiskMagnes"]
         ),
         .library(
+            name: "BraintreePayPalNativeCheckout",
+            targets: ["BraintreePayPalNativeCheckout"]
+        ),
+        .library(
+            name: "BraintreeSEPADirectDebit",
+            targets: ["BraintreeSEPADirectDebit"]
+        ),
+        .library(
             name: "BraintreeThreeDSecure",
             targets: ["BraintreeThreeDSecure", "CardinalMobile", "PPRiskMagnes"]
         ),
@@ -51,9 +59,6 @@ let package = Package(
             name: "PayPalDataCollector",
             targets: ["PayPalDataCollector", "PPRiskMagnes"]
         )
-    ],
-    dependencies: [
-        // Dependencies declare other packages that this package depends on.
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
@@ -93,6 +98,21 @@ let package = Package(
             name: "BraintreePayPal",
             dependencies: ["BraintreeCore", "PayPalDataCollector"],
             publicHeadersPath: "Public"
+        ),
+        .target(
+            name: "BraintreePayPalNativeCheckout",
+            dependencies: ["BraintreeCore", "BraintreePayPal", "PayPalCheckout"],
+            path: "Sources/BraintreePayPalNativeCheckout"
+        ),
+        .binaryTarget(
+            name: "PayPalCheckout",
+            url: "https://github.com/paypal/paypalcheckout-ios/releases/download/0.110.0/PayPalCheckout.xcframework.zip",
+            checksum: "e9895c202b090a7bde5c47685e96aef68b6f334e3f3798a79dd49b32c81fe130"
+        ),
+        .target(
+            name: "BraintreeSEPADirectDebit",
+            dependencies: ["BraintreeCore"],
+            path: "Sources/BraintreeSEPADirectDebit"
         ),
         .target(
             name: "BraintreeThreeDSecure",

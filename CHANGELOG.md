@@ -1,5 +1,87 @@
 # Braintree iOS SDK Release Notes
 
+## 5.19.0 (2022-12-19)
+* BraintreePayPalNativeCheckout (BETA)
+  * Update NativeCheckout version from 0.108.0 to 0.110.0
+  * Fix issue with multiple clientIDs causing incorrect web fallback
+  
+## 5.18.0 (2022-12-13)
+* Deprecate Kount Custom integrations
+* Deprecate the `BraintreeUnionPay` module and containing classes
+  * UnionPay cards can now be processed as regular cards (through the `BraintreeCard` module) due to their partnership with Discover
+
+## 5.17.0 (2022-12-05)
+* BraintreePayPalNativeCheckout (BETA)
+  * Fix CocoaPods bug emitting "Cannot find interface declaration" error ([CocoaPods issue #11672](https://github.com/CocoaPods/CocoaPods/issues/11672))
+  * Rename `riskCorrelationId` to `riskCorrelationID`
+  * Rename `nativeRequest` to `request` internally in `tokenizePayPalAccount`
+  * `tokenizePayPalAccount` now takes in a `request` of type `BTPayPalNativeRequest` instead of a `nativeRequest` of type `BTPayPalRequest`
+
+## 5.16.0 (2022-10-27)
+* BraintreePayPalDataCollector
+  * Update PPRiskMagnes with a version of 5.4.0 with `ENABLE_BITCODE` removed
+    * _The App Store no longer accepts bitcode submissions from Xcode 14_
+    * This version of PPRiskMagnes drops support for Xcode 12 and requires Swift 5.5+
+      * [As of April 25, 2022 Apple requires all apps to be submitted with Xcode 13+](https://developer.apple.com/news/upcoming-requirements/?id=04252022a)
+
+## 5.15.0 (2022-10-26)
+* BraintreePayPalNativeCheckout (BETA)
+  * Fix `merchant_account_id` and `correlation_id` keys to be nested at the top level of the internal create order request
+  * Update Package.swift to fetch `PayPalCheckout` binary dependency directly instead of hosting copy in `braintree_ios` repo
+* BraintreePayPal
+  * Resolve depreciation warning with `UIApplication.sharedApplication` for iOS 15+ targets (fixes #884)
+
+## 5.14.0 (2022-10-05)
+* Remove `ENABLE_BITCODE` from framework target build settings
+  * _The App Store no longer accepts bitcode submissions from Xcode 14_
+* BraintreePayPalNativeCheckout (BETA)
+  * Update NativeCheckout version from 0.106.0 to 0.108.0
+  * Fixes an issue where merchants with multiple client IDs would fallback to web on subsequent checkout sessions
+  * Remove exit survey when canceling Native Checkout flow
+* BraintreeSEPADirectDebit
+  * Resolve Invalid Bundle error when uploading to the App Store
+
+## 5.13.0 (2022-09-16)
+* BraintreePayPalNativeCheckout (BETA)
+  * Fix CocoaPods integrations to pin exact `PayPalCheckout` version
+  * Update NativeCheckout version from 0.100.0 to 0.106.0
+  * This version update allows US based customers with a confirmed phone number to log into their PayPal account using a one time passcode sent via SMS without needing to authenticate through a webview.
+  * Update Package.swift to use local `PayPalCheckout` dependency instead of fetching remotely.
+    * Fixes a bug where all Braintree merchants using SPM (including those not using the `BraintreePayPalNativeCheckout` module), would get `PayPalCheckout` in their projects.
+
+## 5.12.0 (2022-09-07)
+* Adds support for Xcode 14 and iOS 16 
+* BraintreeSEPADirectDebit
+  * Update `BTSEPADirectDebitNonce` to pull in `ibanLastFour` and `customerID` as expected
+  * Remove unused `presentationContextProvider` (fixes #854)
+
+## 5.11.0 (2022-07-20)
+* BraintreeSEPADirectDebit
+  * Add support for SEPA Direct Debit for approved merchants through the Braintree SDK
+  * SEPA Direct Debit is only available to select merchants, please contact your Customer Support Manager or Sales to start processing SEPA bank payments
+  * Merchants should use the `BTSepaDirectDebitClient.tokenize` method while passing in the `BTSEPADirectDebitRequest` and `context` while conforming to `ASWebAuthenticationPresentationContextProviding`
+* BraintreePayPalNativeCheckout (BETA)
+  * This module can handle the same flows as the existing `BraintreePayPal` module, but will present the end user with an in-context checkout flow using native UI components.
+  * To get started, create a `BTPayPalNativeCheckoutClient`, and call `tokenizePayPalAccount` with either a `BTPayPalNativeCheckoutRequest` (for one time payment transactions), or a `BTPayPalNativeVaultRequest` (for vaulted flows)
+
+## 5.10.0 (2022-06-06)
+* Fix potential crash when http request fails with no error but empty data (thanks @cltnschlosser)
+* Update Cardinal SDK to version 2.2.5-3
+
+## 5.9.0 (2022-04-14)
+* Venmo
+  * Reduce network connection lost error frequency on older iOS and Venmo app versions
+* PPDataCollector
+  * Allow passing isSandbox bool for data collection in `clientMetadataID` and `collectPayPalDeviceData` functions
+
+## 5.8.0 (2022-03-24)
+* PPRiskMagnes
+  * Update PPRiskMagnes to 5.4.0
+  * This version of PPRiskMagnes replaces the dynamic framework/xcframework with a static framework/xcframework
+
+## 5.7.0 (2022-03-02)
+* Fix configuration caching
+
 ## 5.6.3 (2022-02-09)
 * Swift Package Manager
   * Add explicit package dependancies for `BraintreeDataCollector`, `BraintreeThreeDSecure`, and `PayPalDataCollector` (fixes #735)

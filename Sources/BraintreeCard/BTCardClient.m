@@ -55,7 +55,10 @@ NSString *const BTCardClientGraphQLTokenizeFeature = @"tokenize_credit_cards";
 
 - (void)tokenizeCard:(BTCard *)card completion:(void (^)(BTCardNonce *tokenizedCard, NSError *error))completion {
     BTCardRequest *request = [[BTCardRequest alloc] initWithCard:card];
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     [self tokenizeCard:request options:nil completion:completion];
+#pragma clang diagnostic pop
 }
 
 
@@ -93,6 +96,9 @@ NSString *const BTCardClientGraphQLTokenizeFeature = @"tokenize_credit_cards";
                       completion:^(BTJSON * _Nullable body, __unused NSHTTPURLResponse * _Nullable response, NSError * _Nullable error)
              {
                  if (error) {
+                     if (error.code == NETWORK_CONNECTION_LOST_CODE) {
+                         [self.apiClient sendAnalyticsEvent:@"ios.tokenize-card.graphQL.network-connection.failure"];
+                     }
                      NSHTTPURLResponse *response = error.userInfo[BTHTTPURLResponseKey];
                      NSError *callbackError = error;
 
@@ -121,6 +127,9 @@ NSString *const BTCardClientGraphQLTokenizeFeature = @"tokenize_credit_cards";
                       completion:^(BTJSON *body, __unused NSHTTPURLResponse *response, NSError *error)
              {
                  if (error != nil) {
+                     if (error.code == NETWORK_CONNECTION_LOST_CODE) {
+                         [self.apiClient sendAnalyticsEvent:@"ios.tokenize-card.network-connection.failure"];
+                     }
                      NSHTTPURLResponse *response = error.userInfo[BTHTTPURLResponseKey];
                      NSError *callbackError = error;
 

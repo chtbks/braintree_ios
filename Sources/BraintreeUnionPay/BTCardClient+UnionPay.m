@@ -27,10 +27,15 @@
 
 #endif
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Weverything"
 @implementation BTCardClient (UnionPay)
+#pragma clang diagnostic pop
 
 #pragma mark - Public methods
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 - (void)fetchCapabilities:(NSString *)cardNumber
                completion:(void (^)(BTCardCapabilities * _Nullable, NSError * _Nullable))completion {
     [self.apiClient fetchOrReturnRemoteConfiguration:^(BTConfiguration * _Nullable configuration, NSError * _Nullable error) {
@@ -65,6 +70,7 @@
          }];
     }];
 }
+#pragma clang diagnostic pop
 
 - (void)enrollCard:(BTCardRequest *)request
         completion:(nonnull void (^)(NSString * _Nullable, BOOL, NSError * _Nullable))completion {
@@ -103,6 +109,9 @@
                   completion:^(BTJSON * _Nullable body, __unused NSHTTPURLResponse * _Nullable response, NSError * _Nullable error)
          {
              if (error) {
+                 if (error.code == NETWORK_CONNECTION_LOST_CODE) {
+                     [self.apiClient sendAnalyticsEvent:@"ios.union-pay.network-connection.failure"];
+                 }
                  [self sendUnionPayEvent:@"enrollment-failed"];
                 
                  NSError *callbackError = error;

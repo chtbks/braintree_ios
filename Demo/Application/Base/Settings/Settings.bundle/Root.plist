@@ -17,6 +17,7 @@
 			<string>BraintreeDemoCardTokenizationViewController</string>
 			<key>Titles</key>
 			<array>
+				<string>PayPal - Native Checkout</string>
 				<string>PayPal - Vault</string>
 				<string>PayPal - Checkout</string>
 				<string>PayPal - Pay Later</string>
@@ -29,9 +30,11 @@
 				<string>iDEAL</string>
 				<string>Amex</string>
 				<string>Preferred Payment Methods</string>
+				<string>SEPA Direct Debit</string>
 			</array>
 			<key>Values</key>
 			<array>
+				<string>BraintreeDemoPayPalNativeCheckoutViewController</string>
 				<string>BraintreeDemoPayPalVaultViewController</string>
 				<string>BraintreeDemoPayPalCheckoutViewController</string>
 				<string>BraintreeDemoPayPalPayLaterViewController</string>
@@ -44,6 +47,7 @@
 				<string>BraintreeDemoIdealViewController</string>
 				<string>BraintreeDemoAmexViewController</string>
 				<string>BraintreeDemoPreferredPaymentMethodsViewController</string>
+				<string>BraintreeDemoSEPADirectDebitViewController</string>
 			</array>
 		</dict>
 		<dict>
@@ -93,7 +97,6 @@
 			<array>
 				<string>Client Token</string>
 				<string>Tokenization Key</string>
-				<string>PayPal ID Token</string>
 			</array>
 			<key>Key</key>
 			<string>BraintreeDemoSettingsAuthorizationTypeKey</string>
@@ -103,7 +106,6 @@
 			<array>
 				<string>Client Token</string>
 				<string>Tokenization Key</string>
-				<string>PayPal ID Token</string>
 			</array>
 			<key>Values</key>
 			<array>

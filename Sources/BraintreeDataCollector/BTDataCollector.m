@@ -1,6 +1,5 @@
 #import "BTDataCollector_Internal.h"
 #import "KDataCollector.h"
-#import <CoreLocation/CoreLocation.h>
 
 #if __has_include(<Junk/Braintree/BraintreeDataCollector.h>)
 #import <Braintree/BTConfiguration+DataCollector.h>
@@ -57,6 +56,7 @@ static Class PayPalDataCollectorClass;
     self.kount.debug = debugLogging;
 
     CLAuthorizationStatus locationStatus = kCLAuthorizationStatusNotDetermined;
+
     if (@available(iOS 14, *)) {
         locationStatus = [CLLocationManager new].authorizationStatus;
     } else {
@@ -87,6 +87,8 @@ static Class PayPalDataCollectorClass;
 
         dispatch_group_t collectorDispatchGroup = dispatch_group_create();
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
         if (configuration.isKountEnabled) {
             BTDataCollectorEnvironment btEnvironment = [self environmentFromString:configuration.environment];
             [self setCollectorEnvironment:[self collectorEnvironment:btEnvironment]];
@@ -102,8 +104,11 @@ static Class PayPalDataCollectorClass;
                 dispatch_group_leave(collectorDispatchGroup);
             }];
         }
+#pragma clang diagnostic pop
+
+        BOOL isSandbox = [configuration.environment isEqualToString:@"sandbox"];
         
-        NSString *payPalClientMetadataID = [BTDataCollector generatePayPalClientMetadataID];
+        NSString *payPalClientMetadataID = [BTDataCollector generatePayPalClientMetadataID:isSandbox];
         if (payPalClientMetadataID) {
             dataDictionary[@"correlation_id"] = payPalClientMetadataID;
         }
@@ -130,11 +135,15 @@ static Class PayPalDataCollectorClass;
 
 #pragma mark - Helper methods
 
-+ (NSString *)generatePayPalClientMetadataID {
++ (NSString *)generatePayPalClientMetadataID:(BOOL)isSandbox {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wundeclared-selector"
-    if (PayPalDataCollectorClass && [PayPalDataCollectorClass respondsToSelector:@selector(generateClientMetadataID)]) {
-        return [PayPalDataCollectorClass performSelector:@selector(generateClientMetadataID)];
+    if (PayPalDataCollectorClass) {
+        if (isSandbox && [PayPalDataCollectorClass respondsToSelector:@selector(sandboxGenerateClientMetadataID)]) {
+            return [PayPalDataCollectorClass performSelector:@selector(sandboxGenerateClientMetadataID)];
+        } else if (!isSandbox && [PayPalDataCollectorClass respondsToSelector:@selector(generateClientMetadataID)]) {
+            return [PayPalDataCollectorClass performSelector:@selector(generateClientMetadataID)];
+        }
     }
 #pragma clang diagnostic pop
     
