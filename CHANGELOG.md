@@ -1,5 +1,40 @@
 # Braintree iOS SDK Release Notes
 
+## 5.23.0 (2023-08-18)
+* BraintreeVenmo
+  * Allow merchants to collect enriched customer data if enabled in the Braintree Control Panel
+  * Add the following properties to `BTVenmoRequest`
+    * `collectCustomerBillingAddress`
+    * `collectCustomerShippingAddress`
+    * `totalAmount`
+    * `subTotalAmount`
+    * `discountAmount`
+    * `taxAmount`
+    * `shippingAmount`
+    * `lineItems`
+
+## 5.22.0 (2023-06-08)
+* Require Xcode 14.1 (per [App Store requirements](https://developer.apple.com/news/?id=jd9wcyov#:~:text=Starting%20April%2025%2C%202023%2C%20iOS,on%20the%20Mac%20App%20Store))
+* Deprecate 3DS v1. Any attempt to use 3DS v1 will now throw an error. See [Migrating to 3D Secure 2](https://developer.paypal.com/braintree/docs/guides/3d-secure/migration) for more information.
+* Carthage `.framework`s are no longer supported in Xcode 14.1, please replace all Frameworks with XCFrameworks and use `--use-xcframeworks` for all Carthage steps
+  * Multi-architecture platforms are not supported when building framework bundles in Xcode 12+. [Prefer building with XCFrameworks](https://github.com/Carthage/Carthage#building-platform-independent-xcframeworks-xcode-12-and-above)).
+
+## 5.21.0 (2023-03-14)
+* Add missed deprecation warnings to `BTCardRequest` Union Pay properties
+* Update Cardinal SDK to version 2.2.5-6
+* BraintreePayPalNativeCheckout (BETA)
+  * Expose `payerID` property on `BTPayPalNativeCheckoutAccountNonce` publicly
+  * Expose all properties on `BTPayPalNativeCheckoutAccountNonce` to Objective-C
+
+## 5.20.1 (2023-01-31)
+* BraintreePayPalNativeCheckout (BETA)
+  * Fix bug where some request dictionaries were being constructed incorrectly
+  * Fix bug where passing `BTPayPalNativeVaultRequest.shippingAddressOverride` as `nil` was incorrectly throwing an error
+
+## 5.20.0 (2023-01-24)
+* BraintreeThreeDSecure
+  * Add `requestedExemptionType` to `BTThreeDSecureRequest`
+
 ## 5.19.0 (2022-12-19)
 * BraintreePayPalNativeCheckout (BETA)
   * Update NativeCheckout version from 0.108.0 to 0.110.0
@@ -23,6 +58,7 @@
     * _The App Store no longer accepts bitcode submissions from Xcode 14_
     * This version of PPRiskMagnes drops support for Xcode 12 and requires Swift 5.5+
       * [As of April 25, 2022 Apple requires all apps to be submitted with Xcode 13+](https://developer.apple.com/news/upcoming-requirements/?id=04252022a)
+    * This version of the PPRiskMagnes framework is dynamic. This reverts a breaking change that was introduced in minor version 5.8.0 (See GitHub issue #920).
 
 ## 5.15.0 (2022-10-26)
 * BraintreePayPalNativeCheckout (BETA)
