@@ -1,4 +1,4 @@
-#if __has_include(<Braintree/BraintreeCard.h>)
+#if __has_include(<Junk/Braintree/BraintreeCard.h>)
 #import <Braintree/BTAuthenticationInsight.h>
 #else
 #import <BraintreeCard/BTAuthenticationInsight.h>

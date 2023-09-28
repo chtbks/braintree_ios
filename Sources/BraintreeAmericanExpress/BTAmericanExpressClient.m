@@ -1,6 +1,6 @@
 #import "BTAmericanExpressClient_Internal.h"
 
-#if __has_include(<Braintree/BraintreeAmericanExpress.h>) // CocoaPods
+#if __has_include(<Junk/Braintree/BraintreeAmericanExpress.h>) // CocoaPods
 #import <Braintree/BTAmericanExpressRewardsBalance.h>
 #import <Braintree/BraintreeCore.h>
 #import <Braintree/BTAPIClient_Internal.h>

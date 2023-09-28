@@ -2,7 +2,7 @@
 #import "BTPaymentFlowDriver+ThreeDSecure_Internal.h"
 #import "BTThreeDSecureResult_Internal.h"
 
-#if __has_include(<Braintree/BraintreeThreeDSecure.h>) // CocoaPods
+#if __has_include(<Junk/Braintree/BraintreeThreeDSecure.h>) // CocoaPods
 #import <Braintree/BraintreeCard.h>
 #import <Braintree/BTAPIClient_Internal.h>
 

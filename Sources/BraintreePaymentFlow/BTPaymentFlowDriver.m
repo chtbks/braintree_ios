@@ -1,7 +1,7 @@
 #import "BTPaymentFlowDriver_Internal.h"
 #import <SafariServices/SafariServices.h>
 
-#if __has_include(<Braintree/BraintreePaymentFlow.h>) // CocoaPods
+#if __has_include(<Junk/Braintree/BraintreePaymentFlow.h>) // CocoaPods
 #import <Braintree/BTPaymentFlowRequest.h>
 #import <Braintree/BTPaymentFlowResult.h>
 #import <Braintree/BTLogger_Internal.h>

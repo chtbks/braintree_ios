@@ -1,6 +1,6 @@
 #import "BTVenmoAppSwitchRequestURL.h"
 
-#if __has_include(<Braintree/BraintreeVenmo.h>) // CocoaPods
+#if __has_include(<Junk/Braintree/BraintreeVenmo.h>) // CocoaPods
 #import <Braintree/BraintreeCore.h>
 #import <Braintree/Braintree-Version.h>
 

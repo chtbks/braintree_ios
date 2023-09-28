@@ -1,6 +1,6 @@
 #import "BTVenmoAppSwitchReturnURL.h"
 
-#if __has_include(<Braintree/BraintreeVenmo.h>)
+#if __has_include(<Junk/Braintree/BraintreeVenmo.h>)
 #import <Braintree/BraintreeCore.h>
 #else
 #import <BraintreeCore/BraintreeCore.h>

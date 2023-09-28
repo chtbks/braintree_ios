@@ -6,7 +6,7 @@ FOUNDATION_EXPORT double BraintreePaymentFlowVersionNumber;
 /// Version string
 FOUNDATION_EXPORT const unsigned char BraintreePaymentFlowVersionString[];
 
-#if __has_include(<Braintree/BraintreePaymentFlow.h>)
+#if __has_include(<Junk/Braintree/BraintreePaymentFlow.h>)
 // Payment Flow
 #import <Braintree/BraintreeCore.h>
 #import <Braintree/BTPaymentFlowDriver.h>

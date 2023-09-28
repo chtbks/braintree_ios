@@ -1,7 +1,7 @@
 #import "BTGraphQLHTTP.h"
 #import "Braintree-Version.h"
 
-#if __has_include(<Braintree/BraintreeCore.h>)
+#if __has_include(<Junk/Braintree/BraintreeCore.h>)
 #import <Braintree/BTURLUtils.h>
 #import <Braintree/BTHTTPErrors.h>
 #import <Braintree/BTJSON.h>

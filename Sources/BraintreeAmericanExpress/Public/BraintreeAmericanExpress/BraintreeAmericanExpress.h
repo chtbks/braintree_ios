@@ -6,7 +6,7 @@ FOUNDATION_EXPORT double BraintreeAmericanExpressVersionNumber;
 /// Version string
 FOUNDATION_EXPORT const unsigned char BraintreeAmericanExpressVersionString[];
 
-#if __has_include(<Braintree/BraintreeAmericanExpress.h>)
+#if __has_include(<Junk/Braintree/BraintreeAmericanExpress.h>)
 #import <Braintree/BraintreeCore.h>
 #import <Braintree/BTAmericanExpressClient.h>
 #import <Braintree/BTAmericanExpressRewardsBalance.h>

@@ -6,7 +6,7 @@ FOUNDATION_EXPORT double BraintreeVenmoVersionNumber;
 /// Version string
 FOUNDATION_EXPORT const unsigned char BraintreeVenmoVersionString[];
 
-#if __has_include(<Braintree/BraintreeVenmo.h>)
+#if __has_include(<Junk/Braintree/BraintreeVenmo.h>)
 #import <Braintree/BraintreeCore.h>
 #import <Braintree/BTConfiguration+Venmo.h>
 #import <Braintree/BTVenmoDriver.h>

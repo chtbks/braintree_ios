@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
 
-#if __has_include(<Braintree/BraintreeThreeDSecure.h>)
+#if __has_include(<Junk/Braintree/BraintreeThreeDSecure.h>)
 #import <Braintree/BTThreeDSecureV2BaseCustomization.h>
 #else
 #import <BraintreeThreeDSecure/BTThreeDSecureV2BaseCustomization.h>

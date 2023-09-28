@@ -1,6 +1,6 @@
 #import "BTThreeDSecureV1BrowserSwitchHelper.h"
 
-#if __has_include(<Braintree/BraintreeThreeDSecure.h>)
+#if __has_include(<Junk/Braintree/BraintreeThreeDSecure.h>)
 #import <Braintree/BTThreeDSecureRequest.h>
 #import <Braintree/BTThreeDSecureLookup.h>
 #import <Braintree/BTThreeDSecureV1UICustomization.h>

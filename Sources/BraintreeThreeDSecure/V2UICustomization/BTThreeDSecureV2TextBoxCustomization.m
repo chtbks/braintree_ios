@@ -1,6 +1,6 @@
 #import "BTThreeDSecureV2BaseCustomization_Internal.h"
 
-#if __has_include(<Braintree/BraintreeThreeDSecure.h>)
+#if __has_include(<Junk/Braintree/BraintreeThreeDSecure.h>)
 #import <Braintree/BTThreeDSecureV2TextBoxCustomization.h>
 #else
 #import <BraintreeThreeDSecure/BTThreeDSecureV2TextBoxCustomization.h>

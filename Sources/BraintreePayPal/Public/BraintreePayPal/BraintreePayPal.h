@@ -6,7 +6,7 @@ FOUNDATION_EXPORT double BraintreePayPalVersionNumber;
 /// Project version string for BraintreePayPal.
 FOUNDATION_EXPORT const unsigned char BraintreePayPalVersionString[];
 
-#if __has_include(<Braintree/BraintreePayPal.h>)
+#if __has_include(<Junk/Braintree/BraintreePayPal.h>)
 #import <Braintree/BraintreeCore.h>
 #import <Braintree/BTConfiguration+PayPal.h>
 #import <Braintree/BTPayPalRequest.h>

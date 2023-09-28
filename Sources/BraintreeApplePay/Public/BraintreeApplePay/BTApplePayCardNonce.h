@@ -1,4 +1,4 @@
-#if __has_include(<Braintree/BraintreeApplePay.h>)
+#if __has_include(<Junk/Braintree/BraintreeApplePay.h>)
 #import <Braintree/BraintreeCore.h>
 #else
 #import <BraintreeCore/BraintreeCore.h>

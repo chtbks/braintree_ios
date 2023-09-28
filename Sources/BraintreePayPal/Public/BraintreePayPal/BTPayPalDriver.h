@@ -1,4 +1,4 @@
-#if __has_include(<Braintree/BraintreePayPal.h>)
+#if __has_include(<Junk/Braintree/BraintreePayPal.h>)
 #import <Braintree/BraintreeCore.h>
 #import <Braintree/BTPayPalCheckoutRequest.h>
 #import <Braintree/BTPayPalVaultRequest.h>

@@ -6,7 +6,7 @@ FOUNDATION_EXPORT double BraintreeUnionPayVersionNumber;
 /// Version string
 FOUNDATION_EXPORT const unsigned char BraintreeUnionPayVersionString[];
 
-#if __has_include(<Braintree/BraintreeUnionPay.h>)
+#if __has_include(<Junk/Braintree/BraintreeUnionPay.h>)
 #import <Braintree/BraintreeCard.h>
 #import <Braintree/BTCardCapabilities.h>
 #import <Braintree/BTCardClient+UnionPay.h>

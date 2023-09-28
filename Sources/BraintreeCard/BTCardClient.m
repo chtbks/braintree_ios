@@ -3,7 +3,7 @@
 #import "BTCard_Internal.h"
 #import "BTConfiguration+Card.h"
 
-#if __has_include(<Braintree/BraintreeCard.h>) // CocoaPods
+#if __has_include(<Junk/Braintree/BraintreeCard.h>) // CocoaPods
 #import <Braintree/BTCardRequest.h>
 #import <Braintree/BTAPIClient_Internal.h>
 #import <Braintree/BTPaymentMethodNonceParser.h>

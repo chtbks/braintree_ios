@@ -1,5 +1,5 @@
 #import <Foundation/Foundation.h>
-#if __has_include(<Braintree/BraintreeThreeDSecure.h>)
+#if __has_include(<Junk/Braintree/BraintreeThreeDSecure.h>)
 #import <Braintree/BTThreeDSecureV2UICustomization.h>
 #import <Braintree/BTThreeDSecureV2LabelCustomization.h>
 #import <Braintree/BTThreeDSecureV2ButtonCustomization.h>

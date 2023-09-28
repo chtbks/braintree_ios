@@ -1,4 +1,4 @@
-#if __has_include(<Braintree/BraintreeThreeDSecure.h>)
+#if __has_include(<Junk/Braintree/BraintreeThreeDSecure.h>)
 #import <Braintree/BTPaymentFlowDriver.h>
 #else
 #import <BraintreePaymentFlow/BTPaymentFlowDriver.h>

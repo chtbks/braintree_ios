@@ -1,4 +1,4 @@
-#if __has_include(<Braintree/BraintreeThreeDSecure.h>)
+#if __has_include(<Junk/Braintree/BraintreeThreeDSecure.h>)
 #import <Braintree/BTThreeDSecurePostalAddress.h>
 #else
 #import <BraintreeThreeDSecure/BTThreeDSecurePostalAddress.h>

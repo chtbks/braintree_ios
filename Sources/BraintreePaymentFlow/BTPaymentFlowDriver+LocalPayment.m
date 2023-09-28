@@ -1,6 +1,6 @@
 #import "BTPaymentFlowDriver_Internal.h"
 
-#if __has_include(<Braintree/BraintreePaymentFlow.h>) // CocoaPods
+#if __has_include(<Junk/Braintree/BraintreePaymentFlow.h>) // CocoaPods
 #import <Braintree/BTPaymentFlowDriver+LocalPayment.h>
 #import <Braintree/BTConfiguration+LocalPayment.h>
 #import <Braintree/BTAPIClient_Internal.h>

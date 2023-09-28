@@ -8,7 +8,7 @@ FOUNDATION_EXPORT const unsigned char BraintreeThreeDSecureVersionString[];
 
 // In this header, you should import all the public headers of your framework using statements like #import <BraintreeThreeDSecure/PublicHeader.h>
 
-#if __has_include(<Braintree/BraintreeThreeDSecure.h>)
+#if __has_include(<Junk/Braintree/BraintreeThreeDSecure.h>)
 #import <Braintree/BraintreePaymentFlow.h>
 #import <Braintree/BraintreeCard.h>
 #import <Braintree/BTConfiguration+ThreeDSecure.h>

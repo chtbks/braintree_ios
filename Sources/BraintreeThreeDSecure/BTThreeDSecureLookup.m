@@ -1,6 +1,6 @@
 #import "BTThreeDSecureLookup_Internal.h"
 
-#if __has_include(<Braintree/BraintreeThreeDSecure.h>)
+#if __has_include(<Junk/Braintree/BraintreeThreeDSecure.h>)
 #import <Braintree/BraintreeCore.h>
 #else
 #import <BraintreeCore/BraintreeCore.h>

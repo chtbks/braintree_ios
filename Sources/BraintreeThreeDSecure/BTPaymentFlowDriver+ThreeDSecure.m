@@ -4,7 +4,7 @@
 #import "BTThreeDSecurePostalAddress_Internal.h"
 #import "BTThreeDSecureAdditionalInformation_Internal.h"
 
-#if __has_include(<Braintree/BraintreeThreeDSecure.h>) // CocoaPods
+#if __has_include(<Junk/Braintree/BraintreeThreeDSecure.h>) // CocoaPods
 #import <Braintree/BTPaymentFlowDriver+ThreeDSecure.h>
 #import <Braintree/BTThreeDSecureRequest.h>
 #import <Braintree/BraintreeCore.h>

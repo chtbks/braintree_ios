@@ -1,7 +1,7 @@
 #import "BTApplePayClient_Internal.h"
 #import <PassKit/PassKit.h>
 
-#if __has_include(<Braintree/BraintreeApplePay.h>) // CocoaPods
+#if __has_include(<Junk/Braintree/BraintreeApplePay.h>) // CocoaPods
 #import <Braintree/BTConfiguration+ApplePay.h>
 #import <Braintree/BTApplePayCardNonce.h>
 #import <Braintree/BraintreeCore.h>

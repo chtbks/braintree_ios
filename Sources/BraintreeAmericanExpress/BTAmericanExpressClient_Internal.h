@@ -1,4 +1,4 @@
-#if __has_include(<Braintree/BraintreeAmericanExpress.h>)
+#if __has_include(<Junk/Braintree/BraintreeAmericanExpress.h>)
 #import <Braintree/BTAmericanExpressClient.h>
 #else
 #import <BraintreeAmericanExpress/BTAmericanExpressClient.h>

@@ -1,4 +1,4 @@
-#if __has_include(<Braintree/BraintreeCore.h>)
+#if __has_include(<Junk/Braintree/BraintreeCore.h>)
 #import <Braintree/BTHTTPErrors.h>
 #else
 #import <BraintreeCore/BTHTTPErrors.h>

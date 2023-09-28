@@ -1,4 +1,4 @@
-#if __has_include(<Braintree/BraintreeUnionPay.h>)
+#if __has_include(<Junk/Braintree/BraintreeUnionPay.h>)
 #import <Braintree/BraintreeCard.h>
 #else
 #import <BraintreeCard/BraintreeCard.h>

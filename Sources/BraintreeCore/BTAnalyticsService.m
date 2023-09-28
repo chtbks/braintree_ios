@@ -4,7 +4,7 @@
 #import "BTHTTP.h"
 #import "BTLogger_Internal.h"
 
-#if __has_include(<Braintree/BraintreeCore.h>)
+#if __has_include(<Junk/Braintree/BraintreeCore.h>)
 #import <Braintree/BTClientMetadata.h>
 #import <Braintree/BTClientToken.h>
 #import <Braintree/BTConfiguration.h>

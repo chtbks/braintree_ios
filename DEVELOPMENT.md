@@ -31,7 +31,7 @@ Public headers for each module must live in the directory `Public/<MODULE_NAME>`
 We use if-else preprocessor directives to satisfy each dependency manager. See the below example for importing a **public header file**.
 
 ```objc
-#if __has_include(<Braintree/BraintreeCore.h>) // CocoaPods
+#if __has_include(<Junk/Braintree/BraintreeCore.h>) // CocoaPods
 #import <Braintree/BraintreeCore.h>
 #else // SPM or Carthage
 #import <BraintreeCore/BraintreeCore.h>
@@ -42,7 +42,7 @@ We use if-else preprocessor directives to satisfy each dependency manager. See t
 
 In general, we avoid importing **internal headers from other modules**, but occasionally it's necessary. See the below example for importing an internal header file from another module:
 ```objc
-#if __has_include(<Braintree/BraintreeAmericanExpress.h>) // CocoaPods
+#if __has_include(<Junk/Braintree/BraintreeAmericanExpress.h>) // CocoaPods
 #import <Braintree/BTAPIClient_Internal.h>
 
 #elif SWIFT_PACKAGE // SPM
@@ -57,7 +57,7 @@ In general, we avoid importing **internal headers from other modules**, but occa
 
 To import a Braintree framework written in **Swift** into an Objective-C file, use the following syntax:
 ```objc
-#if __has_include(<Braintree/Braintree-Swift.h>) // CocoaPods
+#if __has_include(<Junk/Braintree/Braintree-Swift.h>) // CocoaPods
 #import <Braintree/Braintree-Swift.h>
 
 #elif __has_include("Braintree-Swift.h")         // CocoaPods for ReactNative

@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
 
-#if __has_include(<Braintree/BraintreePaymentFlow.h>)
+#if __has_include(<Junk/Braintree/BraintreePaymentFlow.h>)
 #import <Braintree/BraintreeCore.h>
 #else
 #import <BraintreeCore/BraintreeCore.h>

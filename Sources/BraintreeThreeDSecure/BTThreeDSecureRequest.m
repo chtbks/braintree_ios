@@ -7,7 +7,7 @@
 #import "BTThreeDSecureResult_Internal.h"
 #import <SafariServices/SafariServices.h>
 
-#if __has_include(<Braintree/BraintreeThreeDSecure.h>) // CocoaPods
+#if __has_include(<Junk/Braintree/BraintreeThreeDSecure.h>) // CocoaPods
 #import <Braintree/BTThreeDSecureRequest.h>
 #import <Braintree/BTThreeDSecureResult.h>
 #import <Braintree/BTThreeDSecureLookup.h>

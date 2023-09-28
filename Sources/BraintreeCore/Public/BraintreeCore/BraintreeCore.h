@@ -6,7 +6,7 @@ FOUNDATION_EXPORT double BraintreeCoreVersionNumber;
 /// Project version string for BraintreeCore.
 FOUNDATION_EXPORT const unsigned char BraintreeCoreVersionString[];
 
-#if __has_include(<Braintree/BraintreeCore.h>)
+#if __has_include(<Junk/Braintree/BraintreeCore.h>)
 #import <Braintree/BTAPIClient.h>
 #import <Braintree/BTAppContextSwitcher.h>
 #import <Braintree/BTBinData.h>

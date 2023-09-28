@@ -1,6 +1,6 @@
 #import "BTConfiguration+GraphQL.h"
 
-#if __has_include(<Braintree/BraintreeCore.h>)
+#if __has_include(<Junk/Braintree/BraintreeCore.h>)
 #import <Braintree/BTJSON.h>
 #else
 #import <BraintreeCore/BTJSON.h>

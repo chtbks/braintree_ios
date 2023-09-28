@@ -4,7 +4,7 @@
 #import "BTThreeDSecureV2UICustomization_Internal.h"
 #import <CardinalMobile/CardinalMobile.h>
 
-#if __has_include(<Braintree/BraintreeThreeDSecure.h>) // CocoaPods
+#if __has_include(<Junk/Braintree/BraintreeThreeDSecure.h>) // CocoaPods
 #import <Braintree/BTConfiguration+ThreeDSecure.h>
 #import <Braintree/BTThreeDSecureRequest.h>
 #import <Braintree/BTThreeDSecureResult.h>

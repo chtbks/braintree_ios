@@ -2,7 +2,7 @@
 #import "BTPaymentFlowDriver+LocalPayment_Internal.h"
 #import <SafariServices/SafariServices.h>
 
-#if __has_include(<Braintree/BraintreePaymentFlow.h>) // CocoaPods
+#if __has_include(<Junk/Braintree/BraintreePaymentFlow.h>) // CocoaPods
 #import <Braintree/BTLocalPaymentRequest.h>
 #import <Braintree/BTConfiguration+LocalPayment.h>
 #import <Braintree/BTLocalPaymentResult.h>
@@ -27,7 +27,7 @@
 #import <BraintreeCore/BraintreeCore.h>
 #endif
 
-#if __has_include(<Braintree/Braintree-Swift.h>)      // CocoaPods
+#if __has_include(<Junk/Braintree/Braintree-Swift.h>)      // CocoaPods
 #import <Braintree/Braintree-Swift.h>
 
 #elif SWIFT_PACKAGE                                   // SPM

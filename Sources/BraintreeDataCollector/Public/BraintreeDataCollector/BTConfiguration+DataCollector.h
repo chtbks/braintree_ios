@@ -1,4 +1,4 @@
-#if __has_include(<Braintree/BraintreeDataCollector.h>)
+#if __has_include(<Junk/Braintree/BraintreeDataCollector.h>)
 #import <Braintree/BraintreeCore.h>
 #else
 #import <BraintreeCore/BraintreeCore.h>
